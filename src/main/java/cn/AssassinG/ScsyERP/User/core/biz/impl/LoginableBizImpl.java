@@ -20,7 +20,7 @@ public abstract class LoginableBizImpl<T extends LoginableEntity> extends BaseBi
         if(entity.getName() == null || entity.getName().isEmpty()){
             entity.setName("-1");
         }
-        System.out.println("In createWithUser, creating : " + entity);
+        System.out.println("In createWithUser, creating: " + entity);
         long user_info = this.create(entity);
         if(entity.getName().equals("-1")){
             entity.setName(entity.getClass().getSimpleName()+user_info);
