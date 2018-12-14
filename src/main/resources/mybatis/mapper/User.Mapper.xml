@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.AssassinG.ScsyERP.User.core.dao.impl.UserDaoImpl">
+
+	<!-- 用户信息表 -->
+	<sql id="t_user"> t_user </sql>
+
+	<resultMap id="beanMap" type="UserBean" extends="cn.AssassinG.ScsyERP.common.entity.BaseEntity.BaseEntityMap">
+		<result column="user_name" property="UserName" />
+        <result column="_password" property="PassWord" />
+		<result column="phone" property="Phone" />
+		<result column="vcode" property="Vcode" />
+		<result column="vcode_time" property="VcodeTime" />
+		<result column="if_registered" property="IfRegistered" />
+		<result column="user_type" property="UserType" typeHandler="cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler" />
+		<result column="user_info" property="UserInfo" />
+	</resultMap>
+
+	<insert id="insert" parameterType="UserBean" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_user"/> (corporation, create_time, update_time, delete_time, is_deleted, user_name, _password, phone, vcode, vcode_time, if_registered, user_type, user_info)
+		values (#{Corporation}, now(), now(), NULL , FALSE , #{UserName}, #{PassWord}, #{Phone}, #{Vcode}, #{VcodeTime}, #{IfRegistered}, #{UserType,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler}, #{UserInfo})
+	</insert>
+
+	<insert id="batchInsert" parameterType="List" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_user"/> (corporation, create_time, update_time, delete_time, is_deleted, user_name, _password, phone, vcode, vcode_time, if_registered, user_type, user_info)
+		values
+        <foreach collection="list" item="obj" separator=",">
+            (#{obj.Corporation}, now(), now(), NULL, FALSE, #{obj.UserName}, #{obj.PassWord}, #{obj.Phone}, #{obj.Vcode}, #{obj.VcodeTime}, #{obj.IfRegistered}, #{obj.UserType,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler}, #{obj.UserInfo})
+        </foreach>
+	</insert>
+	
+	<update id="update" parameterType="UserBean">
+		update <include refid="t_user"/>
+		<set>
+			update_time = now(),
+			user_name =  #{UserName},
+            _password =  #{PassWord},
+			phone = #{Phone},
+			vcode = #{Vcode},
+			vcode_time = #{VcodeTime},
+			if_registered = #{IfRegistered},
+			user_type = #{UserType,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler},
+			user_info = #{UserInfo}
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+
+    <update id="batchUpdate" parameterType="List">
+        update <include refid="t_user"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    when id=#{item.Id} then now()
+                </foreach>
+            </trim>
+            <trim prefix="user_name =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.UserName!=null">
+                        when id=#{item.Id} then #{item.UserName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="_password =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.PassWord!=null">
+                        when id=#{item.Id} then #{item.PassWord}
+                    </if>
+                </foreach>
+            </trim>
+			<trim prefix="phone =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.Phone!=null">
+						when id=#{item.Id} then #{item.Phone}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="vcode =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.Vcode!=null">
+						when id=#{item.Id} then #{item.Vcode}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="vcode_time =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.VcodeTime!=null">
+						when id=#{item.Id} then #{item.VcodeTime}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="if_registered =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.IfRegistered!=null">
+						when id=#{item.Id} then #{item.IfRegistered}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="user_type =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.UserType!=null">
+						when id=#{item.Id} then #{item.UserType,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="user_info =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.UserInfo!=null">
+						when id=#{item.Id} then #{item.UserInfo}
+					</if>
+				</foreach>
+			</trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id=#{item.Id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="delete" parameterType="UserBean">
+        update <include refid="t_user"/>
+        <set>
+            delete_time = now(),
+			update_time = now(),
+            is_deleted =  true
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+	<update id="deleteById" parameterType="long">
+		update <include refid="t_user"/>
+		<set>
+			delete_time = now(),
+			update_time = now(),
+			is_deleted =  true
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+	
+  	<select id="getById" parameterType="long" resultMap="beanMap">
+    	select * from <include refid="t_user"/> where id = #{Id}
+  	</select>
+  	
+  	<select id="findByUserNo" parameterType="string" resultMap="beanMap">
+    	select * from <include refid="t_user"/> where user_name= #{UserName}
+  	</select>
+  	
+  	<select id="listAll" resultMap="beanMap">
+    	select * from <include refid="t_user"/> order by id asc
+  	</select>
+
+	<sql id="condition_sql">
+		<!-- Equal query -->
+		<if test="Id != null"> and id = #{Id}</if>
+		<if test="Corporation != null"> and corporation = #{Corporation}</if>
+		<if test="createTimeBegin != null"> and create_time &gt;= #{createTimeBegin}</if>
+		<if test="createTimeEnd != null"> and create_time &lt;= #{createTimeEnd}</if>
+		<if test="updateTimeBegin != null"> and update_time &gt;= #{updateTimeBegin}</if>
+		<if test="updateTimeEnd != null"> and update_time &lt;= #{updateTimeEnd}</if>
+		<if test="deleteTimeBegin != null"> and delete_time &gt;= #{deleteTimeBegin}</if>
+		<if test="deleteTimeEnd != null"> and delete_time &lt;= #{deleteTimeEnd}</if>
+		<if test="IfDeleted != null"> and is_deleted = #{IfDeleted}</if>
+		<if test="PassWord != null and PassWord != ''"> and _password = #{PassWord}</if>
+		<if test="IfRegistered != null and IfRegistered != ''"> and if_registered = #{IfRegistered}</if>
+		<if test="UserType != null"> and user_type = #{UserType,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.UserTypeHandler}</if>
+		<if test="UserInfo != null and UserInfo != ''"> and user_info = #{UserInfo}</if>
+		<!-- Like query -->
+		<if test="UserName != null and UserName != ''"> and user_name like CONCAT(CONCAT('%', #{UserName}), '%')</if>
+		<if test="Phone != null and Phone != ''"> and phone like CONCAT(CONCAT('%', #{Phone}), '%')</if>
+	</sql>
+
+	<select id="listBy" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_user"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_user"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		select count(1) from <include refid="t_user"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.AssassinG.ScsyERP.User.core.dao.impl.PermissionDaoImpl">
+
+    <!-- 用户信息表 -->
+    <sql id="t_permission"> t_permission </sql>
+
+    <resultMap id="beanMap" type="PermissionBean" extends="cn.AssassinG.ScsyERP.common.entity.BaseEntity.BaseEntityMap">
+        <result column="permission_name" property="PermissionName" />
+        <result column="permission_desc" property="PermissionDesc" />
+    </resultMap>
+
+    <insert id="insert" parameterType="PermissionBean" keyProperty="id" useGeneratedKeys="true">
+        insert into <include refid="t_permission"/> (corporation, create_time, update_time, delete_time, is_deleted, permission_name, permission_desc)
+        values (#{Corporation}, now(), now(), NULL, FALSE, #{PermissionName}, #{PermissionDesc})
+    </insert>
+
+    <insert id="batchInsert" parameterType="List" keyProperty="id" useGeneratedKeys="true">
+        insert into <include refid="t_permission"/> (corporation, create_time, update_time, delete_time, is_deleted, permission_name, permission_desc)
+        values
+        <foreach collection="list" item="obj" separator=",">
+            (#{obj.Corporation}, now(), now(), NULL, FALSE, #{obj.PermissionName}, #{obj.PermissionDesc})
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="PermissionBean">
+        update <include refid="t_permission"/>
+        <set>
+            update_time = now(),
+            permission_name =  #{PermissionName},
+            permission_desc =  #{PermissionDesc}
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+    <update id="batchUpdate" parameterType="List">
+        update <include refid="t_permission"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    when id=#{item.Id} then now()
+                </foreach>
+            </trim>
+            <trim prefix="permission_name =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.PermissionName!=null">
+                        when id=#{item.Id} then #{item.PermissionName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="permission_desc =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.PermissionDesc!=null">
+                        when id=#{item.Id} then #{item.PermissionDesc}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id=#{item.Id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="delete" parameterType="PermissionBean">
+        update <include refid="t_permission"/>
+        <set>
+            delete_time = now(),
+            update_time = now(),
+            is_deleted =  true
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+    <update id="deleteById" parameterType="long">
+        update <include refid="t_permission"/>
+        <set>
+            delete_time = now(),
+            update_time = now(),
+            is_deleted =  true
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+    <select id="getById" parameterType="long" resultMap="beanMap">
+        select * from <include refid="t_permission"/> where id = #{Id}
+    </select>
+
+    <select id="listAll" resultMap="beanMap">
+        select * from <include refid="t_permission"/> order by id asc
+    </select>
+
+    <!--<select Id="listByUserId" parameterType="long" resultMap="beanMap">-->
+        <!--SELECT p.*-->
+        <!--FROM t_permission p-->
+        <!--LEFT JOIN t_user_role ur ON (ur.user_id = #{Id})-->
+        <!--LEFT JOIN t_role_permission rp ON (rp.role_id = ur.role_id)-->
+        <!--WHERE p.Id = rp.permission_id-->
+    <!--</select>-->
+
+    <!--<select Id="listByUsername" parameterType="string" resultMap="beanMap">-->
+        <!--SELECT p.*-->
+        <!--FROM t_permission p-->
+        <!--LEFT JOIN t_user u ON (u.user_name = #{userName})-->
+        <!--LEFT JOIN t_user_role ur ON (ur.user_id = u.Id)-->
+        <!--LEFT JOIN t_role_permission rp ON (rp.role_id = ur.role_id)-->
+        <!--WHERE p.Id = rp.permission_id-->
+    <!--</select>-->
+
+    <select id="listByRoleId" parameterType="long" resultMap="beanMap">
+        SELECT p.*
+        FROM t_permission p
+        LEFT JOIN t_role_permission rp ON (rp.role_id = #{Id})
+        WHERE p.id = rp.permission_id
+    </select>
+
+    <select id="listByRolename" parameterType="string" resultMap="beanMap">
+        SELECT p.*
+        FROM t_permission p
+        LEFT JOIN t_role r ON (r.role_name = #{RoleName})
+        LEFT JOIN t_role_permission rp ON (rp.role_id = r.id)
+        WHERE p.id = rp.permission_id
+    </select>
+
+    <sql id="condition_sql">
+        <!-- Equal query -->
+        <if test="Id != null"> and id = #{Id}</if>
+        <if test="Corporation != null"> and corporation = #{Corporation}</if>
+        <if test="createTimeBegin != null"> and create_time &gt;= #{createTimeBegin}</if>
+        <if test="createTimeEnd != null"> and create_time &lt;= #{createTimeEnd}</if>
+        <if test="updateTimeBegin != null"> and update_time &gt;= #{updateTimeBegin}</if>
+        <if test="updateTimeEnd != null"> and update_time &lt;= #{updateTimeEnd}</if>
+        <if test="deleteTimeBegin != null"> and delete_time &gt;= #{deleteTimeBegin}</if>
+        <if test="deleteTimeEnd != null"> and delete_time &lt;= #{deleteTimeEnd}</if>
+        <if test="IfDeleted != null"> and is_deleted = #{IfDeleted}</if>
+        <!-- Like query -->
+        <if test="PermissionName != null and PermissionName != ''"> and permission_name like CONCAT(CONCAT('%', #{PermissionName}), '%')</if>
+        <if test="PermissionDesc != null and PermissionDesc != ''"> and permission_desc like CONCAT(CONCAT('%', #{PermissionDesc}), '%')</if>
+    </sql>
+
+    <select id="listBy" parameterType="java.util.Map" resultMap="beanMap">
+        select * from
+        <include refid="t_permission"/>
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        <![CDATA[ order by id asc]]>
+    </select>
+
+    <select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+        select * from
+        <include refid="t_permission"/>
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        <![CDATA[ order by id asc]]>
+    </select>
+
+    <select id="listPageCount" parameterType="java.util.Map" resultType="long">
+        select count(1) from <include refid="t_permission"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+</mapper>

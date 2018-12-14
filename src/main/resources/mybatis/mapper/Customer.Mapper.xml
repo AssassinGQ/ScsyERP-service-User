@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.AssassinG.ScsyERP.User.core.dao.impl.CustomerDaoImpl">
+
+	<!-- 用户信息表 -->
+	<sql id="t_customer"> t_customer </sql>
+
+	<resultMap id="beanMap" type="CustomerBean" extends="cn.AssassinG.ScsyERP.common.entity.BaseEntity.LoginableEntityMap">
+		<result column="address" property="Address" />
+        <result column="bank" property="Bank" />
+        <result column="tax_number" property="TaxNumber" />
+	</resultMap>
+
+	<insert id="insert" parameterType="CustomerBean" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_customer"/> (corporation, create_time, update_time, delete_time, is_deleted, name, address, bank, tax_number)
+		values (#{Corporation}, now(), now(), NULL, FALSE, #{Name}, #{Address}, #{Bank}, #{TaxNumber})
+	</insert>
+
+	<insert id="batchInsert" parameterType="List" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_customer"/> (corporation, create_time, update_time, delete_time, is_deleted, name, address, bank, tax_number)
+		values
+        <foreach collection="list" item="obj" separator=",">
+            (#{obj.Corporation}, now(), now(), NULL, FALSE, #{obj.Name}, #{obj.Address}, #{obj.Bank}, #{obj.TaxNumber})
+        </foreach>
+	</insert>
+	
+	<update id="update" parameterType="CustomerBean">
+		update <include refid="t_customer"/>
+		<set>
+			update_time = now(),
+			name =  #{Name},
+            address = #{Address},
+            bank = #{Bank},
+            tax_number = #{TaxNumber}
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+
+    <update id="batchUpdate" parameterType="List">
+        update <include refid="t_customer"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    when id=#{item.Id} then now()
+                </foreach>
+            </trim>
+            <trim prefix="name =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.Name!=null">
+                        when id=#{item.Id} then #{item.Name}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="address =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.Address!=null">
+                        when id=#{item.Id} then #{item.Address}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="bank =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.Bank!=null">
+                        when id=#{item.Id} then #{item.Bank}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="tax_number =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.TaxNumber!=null">
+                        when id=#{item.Id} then #{item.TaxNumber}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id=#{item.Id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="delete" parameterType="CustomerBean">
+        update <include refid="t_customer"/>
+        <set>
+            delete_time = now(),
+			update_time = now(),
+            is_deleted =  true
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+	<update id="deleteById" parameterType="long">
+		update <include refid="t_customer"/>
+		<set>
+			delete_time = now(),
+			update_time = now(),
+			is_deleted =  true
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+	
+  	<select id="getById" parameterType="long" resultMap="beanMap">
+    	select * from <include refid="t_customer"/> where id = #{Id}
+  	</select>
+  	
+  	<select id="listAll" resultMap="beanMap">
+    	select * from <include refid="t_customer"/> order by id asc
+  	</select>
+
+	<sql id="condition_sql">
+		<!-- Equal query -->
+		<if test="Id != null"> and id = #{Id}</if>
+		<if test="Corporation != null"> and corporation = #{Corporation}</if>
+		<if test="createTimeBegin != null"> and create_time &gt;= #{createTimeBegin}</if>
+		<if test="createTimeEnd != null"> and create_time &lt;= #{createTimeEnd}</if>
+		<if test="updateTimeBegin != null"> and update_time &gt;= #{updateTimeBegin}</if>
+		<if test="updateTimeEnd != null"> and update_time &lt;= #{updateTimeEnd}</if>
+		<if test="deleteTimeBegin != null"> and delete_time &gt;= #{deleteTimeBegin}</if>
+		<if test="deleteTimeEnd != null"> and delete_time &lt;= #{deleteTimeEnd}</if>
+		<if test="IfDeleted != null"> and is_deleted = #{IfDeleted}</if>
+        <if test="TaxNumber != null"> and tax_number = #{TaxNumber}</if>
+		<!-- Like query -->
+		<if test="Name != null and Name != ''"> and name like CONCAT(CONCAT('%', #{Name}), '%')</if>
+        <if test="Address != null and Address != ''"> and address like CONCAT(CONCAT('%', #{Address}), '%')</if>
+        <if test="Bank != null and Bank != ''"> and bank like CONCAT(CONCAT('%', #{Bank}), '%')</if>
+	</sql>
+
+	<select id="listBy" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_customer"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_customer"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		select count(1) from <include refid="t_customer"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+</mapper>

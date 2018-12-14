@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.AssassinG.ScsyERP.User.core.dao.impl.GovernmentImpl">
+
+	<!-- 用户信息表 -->
+	<sql id="t_government"> t_government </sql>
+
+	<resultMap id="beanMap" type="GovernmentBean" extends="cn.AssassinG.ScsyERP.common.entity.BaseEntity.LoginableEntityMap">
+		<result column="dept" property="Dept" typeHandler="cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler" />
+	</resultMap>
+
+	<insert id="insert" parameterType="GovernmentBean" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_government"/> (corporation, create_time, update_time, delete_time, is_deleted, name, dept)
+		values (-1, now(), now(), NULL , FALSE , #{Name}, #{Dept,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler})
+	</insert>
+
+	<insert id="batchInsert" parameterType="List" keyProperty="id" useGeneratedKeys="true">
+		insert into <include refid="t_government"/> (corporation, create_time, update_time, delete_time, is_deleted, name, dept)
+		values
+        <foreach collection="list" item="obj" separator=",">
+            (-1, now(), now(), NULL, FALSE, #{obj.Name}, #{obj.Dept,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler})
+        </foreach>
+	</insert>
+	
+	<update id="update" parameterType="GovernmentBean">
+		update <include refid="t_government"/>
+		<set>
+			update_time = now(),
+			name =  #{Name},
+			dept = #{Dept,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler}
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+
+    <update id="batchUpdate" parameterType="List">
+        update <include refid="t_government"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    when id=#{item.Id} then now()
+                </foreach>
+            </trim>
+            <trim prefix="name =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.Name!=null">
+                        when id=#{item.Id} then #{item.Name}
+                    </if>
+                </foreach>
+            </trim>
+			<trim prefix="dept =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.Dept!=null">
+						when id=#{item.Id} then #{item.Dept,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler}
+					</if>
+				</foreach>
+			</trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id=#{item.Id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="delete" parameterType="GovernmentBean">
+        update <include refid="t_government"/>
+        <set>
+            delete_time = now(),
+			update_time = now(),
+            is_deleted =  true
+        </set>
+        <where>
+            id = #{Id}
+        </where>
+    </update>
+
+	<update id="deleteById" parameterType="long">
+		update <include refid="t_government"/>
+		<set>
+			delete_time = now(),
+			update_time = now(),
+			is_deleted =  true
+		</set>
+		<where>
+			id = #{Id}
+		</where>
+	</update>
+	
+  	<select id="getById" parameterType="long" resultMap="beanMap">
+    	select * from <include refid="t_government"/> where id = #{Id}
+  	</select>
+  	
+  	<select id="listAll" resultMap="beanMap">
+    	select * from <include refid="t_government"/> order by id asc
+  	</select>
+
+	<sql id="condition_sql">
+		<!-- Equal query -->
+		<if test="Id != null"> and id = #{Id}</if>
+		<if test="Corporation != null"> and corporation = #{Corporation}</if>
+		<if test="createTimeBegin != null"> and create_time &gt;= #{createTimeBegin}</if>
+		<if test="createTimeEnd != null"> and create_time &lt;= #{createTimeEnd}</if>
+		<if test="updateTimeBegin != null"> and update_time &gt;= #{updateTimeBegin}</if>
+		<if test="updateTimeEnd != null"> and update_time &lt;= #{updateTimeEnd}</if>
+		<if test="deleteTimeBegin != null"> and delete_time &gt;= #{deleteTimeBegin}</if>
+		<if test="deleteTimeEnd != null"> and delete_time &lt;= #{deleteTimeEnd}</if>
+		<if test="IfDeleted != null"> and is_deleted = #{IfDeleted}</if>
+		<if test="Dept != null"> and dept = #{Dept,typeHandler=cn.AssassinG.ScsyERP.User.core.dao.MyBatisHandler.GovernmentDeptTypeHandler}</if>
+		<!-- Like query -->
+		<if test="Name != null and Name != ''"> and name like CONCAT(CONCAT('%', #{Name}), '%')</if>
+	</sql>
+
+	<select id="listBy" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_government"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+		select * from
+		<include refid="t_government"/>
+		<where>
+			<include refid="condition_sql" />
+		</where>
+		<![CDATA[ order by id asc]]>
+	</select>
+
+	<select id="listPageCount" parameterType="java.util.Map" resultType="long">
+		select count(1) from <include refid="t_government"/>
+		<where>
+			<include refid="condition_sql"/>
+		</where>
+	</select>
+	
+</mapper>
