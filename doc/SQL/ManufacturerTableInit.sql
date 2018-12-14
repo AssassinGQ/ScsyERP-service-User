@@ -12,7 +12,7 @@ create table t_manufacturer (
   name          VARCHAR(30) NOT NULL                    COMMENT '名称',
   address       VARCHAR(100) NOT NULL                   COMMENT '地址',
   man_name      VARCHAR(20)                              COMMENT '联系人姓名',
-  workshops     TEXT                                    COMMENT '下属车间',
+  workshops     TEXT                                   COMMENT '下属车间',
   PRIMARY KEY (id)
 );
 
