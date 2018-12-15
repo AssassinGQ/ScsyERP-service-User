@@ -173,9 +173,6 @@ public interface UserBiz extends BaseBiz<User> {
 
 //    Set<Permission> findInheritRolePermissions(Long roleId);
 
-
-
-
-
+    
 
 }
