@@ -6,6 +6,8 @@ import cn.AssassinG.ScsyERP.User.facade.service.LoginableService;
 import cn.AssassinG.ScsyERP.common.core.biz.BaseBiz;
 import cn.AssassinG.ScsyERP.common.core.service.impl.BaseServiceImpl;
 import cn.AssassinG.ScsyERP.common.entity.LoginableEntity;
+import cn.AssassinG.ScsyERP.common.exceptions.BizException;
+import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public abstract class LoginableServiceImpl<T extends LoginableEntity> extends Ba
         return -1L;
     }
 
-    public Long createWithUser(T entity, User user){
+    public Long createWithUser(T entity, User user) throws DaoException, BizException {
         return getLoginableBiz().createWithUser(entity, user);
     }
     public void updateByMap(Long entityId, Map<String, String> paramMap){
