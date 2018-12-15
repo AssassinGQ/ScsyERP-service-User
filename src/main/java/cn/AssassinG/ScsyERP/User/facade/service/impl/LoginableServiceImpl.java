@@ -28,8 +28,12 @@ public abstract class LoginableServiceImpl<T extends LoginableEntity> extends Ba
         return -1L;
     }
 
-    public Long createWithUser(T entity, User user) throws DaoException, BizException {
-        return getLoginableBiz().createWithUser(entity, user);
+    public Long createWithUser(T entity, User user) {
+        try{
+            return getLoginableBiz().createWithUser(entity, user);
+        }catch(BizException | DaoException e){
+            throw e;
+        }
     }
     public void updateByMap(Long entityId, Map<String, String> paramMap){
         getLoginableBiz().updateByMap(entityId, paramMap);
