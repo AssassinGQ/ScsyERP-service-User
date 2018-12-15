@@ -5,7 +5,6 @@ import cn.AssassinG.ScsyERP.User.facade.entity.Role;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.common.core.biz.BaseBiz;
 
-import java.util.List;
 import java.util.Set;
 
 public interface UserBiz extends BaseBiz<User> {
@@ -94,28 +93,12 @@ public interface UserBiz extends BaseBiz<User> {
      */
     void removeUserRole(Long userId, Long roleId);
     /**
-     * @param roleId 不能为空
-     * @param permissionId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    void addRolePermission(Long roleId, Long permissionId);
-
-    /**
-     * @param roleId 不能为空
-     * @param permissionId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    void removeRolePermission(Long roleId, Long permissionId);
-    /**
      * @param userId 不能为空
      * @param permissionId 不能为空
      * @return
      * 抛出运行异常：参数不合法、DAO异常
      */
     void addUserPermission(Long userId, Long permissionId);
-
     /**
      * @param userId 不能为空
      * @param permissionId 不能为空
@@ -124,43 +107,11 @@ public interface UserBiz extends BaseBiz<User> {
      */
     void removeUserPermission(Long userId, Long permissionId);
     /**
-     * @return 返回所有角色信息的列表
-     * 抛出运行异常：DAO异常
-     */
-    List<Role> findAllRoles();
-    /**
-     * @return 返回所有权限信息的列表
-     * 抛出运行异常：DAO异常
-     */
-    List<Permission> findAllPermission();
-    /**
      * @param userId
      * @return userId对应的用户拥有的角色集合
      * 抛出运行异常：参数不合法、DAO异常
      */
     Set<Role> findUserRoles(Long userId);
-    /**
-     * @param roleName 不能为空
-     * @return null或者Role
-     * 抛出运行异常：角色名不唯一、DAO异常
-     */
-    Role findRoleByRoleName(String roleName);
-
-    //    List<Role> findRolesInherit();
-    //    List<Role> findChileRoles(Long fatherid);
-    /**
-     * @param roleId 不能为空
-     * @return 权限集合
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    Set<Permission> findRolePermissions(Long roleId);
-    /**
-     * 获得所有父角色的全部权限集合
-     * @param roleId 不能为空
-     * @return
-     * 抛出运行异常：角色名称不唯一、参数不合法、DAO异常
-     */
-    Set<Permission> findFatherRolePermissions(Long roleId);
     /**
      * @param userId 不能为空
      * @return 权限集合
@@ -168,11 +119,5 @@ public interface UserBiz extends BaseBiz<User> {
      */
     Set<Permission> findUserPermissions(Long userId);
 
-
-
-
 //    Set<Permission> findInheritRolePermissions(Long roleId);
-
-    
-
 }

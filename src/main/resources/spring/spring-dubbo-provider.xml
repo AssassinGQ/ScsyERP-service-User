@@ -25,6 +25,8 @@
 	<!-- 声明需要暴露的服务接口 -->
 	<!-- 用户管理 -->
 	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade" ref="UserServiceFacade" />
+	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.RoleServiceFacade" ref="RoleServiceFacade" />
+	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.PermissionServiceFacade" ref="PermissionServiceFacade" />
 	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.CorporationServiceFacade" ref="CorporationServiceFacade" />
 	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.GovernmentServiceFacade" ref="GovernmentServiceFacade" />
 	<dubbo:service timeout="3000" retries="0" interface="cn.AssassinG.ScsyERP.User.facade.service.AdminServiceFacade" ref="AdminServiceFacade" />

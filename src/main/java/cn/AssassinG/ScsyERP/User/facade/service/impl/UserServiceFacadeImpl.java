@@ -10,7 +10,6 @@ import cn.AssassinG.ScsyERP.common.core.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,28 +76,8 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
         return userBiz.findUserRoles(userid);
     }
 
-    public List<Role> findAllRoles() {
-        return userBiz.findAllRoles();
-    }
-
-    public Role findRoleByRoleName(String rolename) {
-        return userBiz.findRoleByRoleName(rolename);
-    }
-
     public Set<Permission> findUserPermissions(Long userid) {
         return userBiz.findUserPermissions(userid);
-    }
-
-    public Set<Permission> findRolePermissions(Long roleid) {
-        return userBiz.findRolePermissions(roleid);
-    }
-
-    public Set<Permission> findFatherRolePermissions(Long roleid) {
-        return userBiz.findFatherRolePermissions(roleid);
-    }
-
-    public List<Permission> findAllPermission() {
-        return userBiz.findAllPermission();
     }
 
     public void addUserRole(Long userid, Long roleid) {
@@ -107,14 +86,6 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
 
     public void removeUserRole(Long userid, Long roleid) {
         userBiz.removeUserRole(userid, roleid);
-    }
-
-    public void addRolePermission(Long roleid, Long permissionid) {
-        userBiz.addRolePermission(roleid, permissionid);
-    }
-
-    public void removeRolePermission(Long roleid, Long permissionid) {
-        userBiz.removeRolePermission(roleid, permissionid);
     }
 
     public void addUserPermission(Long userId, Long permissionId) {
