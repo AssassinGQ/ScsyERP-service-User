@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component("AdminBiz")
+@Component("PermissionBiz")
 public class PermissionBizImpl extends BaseBizImpl<Permission> implements PermissionBiz {
 
     @Autowired

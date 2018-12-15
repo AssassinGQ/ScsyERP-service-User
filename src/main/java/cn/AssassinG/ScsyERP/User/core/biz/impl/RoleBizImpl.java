@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Component("AdminBiz")
+@Component("RoleBiz")
 public class RoleBizImpl extends BaseBizImpl<Role> implements RoleBiz {
 
     @Autowired
