@@ -6,10 +6,8 @@
         <fileset id="fileset" name="Spring Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/spring/spring-context.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/spring/spring-mybatis.xml</file>
-        </fileset>
-        <fileset id="fileset2" name="Spring Dubbo Provider" removed="false">
-          <file>file://$MODULE_DIR$/src/main/resources/spring/spring-dubbo-provider.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/spring/spring-dubbo-consumer.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/spring-dubbo-provider.xml</file>
         </fileset>
       </configuration>
     </facet>

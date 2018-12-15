@@ -101,19 +101,27 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
         return userBiz.findAllPermission();
     }
 
-    public boolean addPermissionToRole(Long roleid, Long permissionid) {
-        return userBiz.addPermissionToRole(roleid, permissionid);
+    public void addUserRole(Long userid, Long roleid) {
+        userBiz.addUserRole(userid, roleid);
     }
 
-    public boolean removePermissionFromRole(Long roleid, Long permissionid) {
-        return userBiz.removePermissionFromRole(roleid, permissionid);
+    public void removeUserRole(Long userid, Long roleid) {
+        userBiz.removeUserRole(userid, roleid);
     }
 
-    public boolean addUserRole(Long userid, Long roleid) {
-        return userBiz.addUserRole(userid, roleid);
+    public void addRolePermission(Long roleid, Long permissionid) {
+        userBiz.addRolePermission(roleid, permissionid);
     }
 
-    public boolean removeUserRole(Long userid, Long roleid) {
-        return userBiz.removeUserRole(userid, roleid);
+    public void removeRolePermission(Long roleid, Long permissionid) {
+        userBiz.removeRolePermission(roleid, permissionid);
+    }
+
+    public void addUserPermission(Long userId, Long permissionId) {
+        userBiz.addUserPermission(userId, permissionId);
+    }
+
+    public void removeUserPermission(Long userId, Long permissionId) {
+        userBiz.removeUserPermission(userId, permissionId);
     }
 }

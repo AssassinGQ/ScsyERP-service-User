@@ -80,18 +80,65 @@ public interface UserBiz extends BaseBiz<User> {
 
     //auth
     /**
-     * @param userId
-     * @return userId对应的用户拥有的角色集合
+     * @param userId 不能为空
+     * @param roleId 不能为空
+     * @return
      * 抛出运行异常：参数不合法、DAO异常
      */
-    Set<Role> findUserRoles(Long userId);
+    void addUserRole(Long userId, Long roleId);
+    /**
+     * @param userId 不能为空
+     * @param roleId 不能为空
+     * @return
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    void removeUserRole(Long userId, Long roleId);
+    /**
+     * @param roleId 不能为空
+     * @param permissionId 不能为空
+     * @return
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    void addRolePermission(Long roleId, Long permissionId);
 
+    /**
+     * @param roleId 不能为空
+     * @param permissionId 不能为空
+     * @return
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    void removeRolePermission(Long roleId, Long permissionId);
+    /**
+     * @param userId 不能为空
+     * @param permissionId 不能为空
+     * @return
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    void addUserPermission(Long userId, Long permissionId);
+
+    /**
+     * @param userId 不能为空
+     * @param permissionId 不能为空
+     * @return
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    void removeUserPermission(Long userId, Long permissionId);
     /**
      * @return 返回所有角色信息的列表
      * 抛出运行异常：DAO异常
      */
     List<Role> findAllRoles();
-
+    /**
+     * @return 返回所有权限信息的列表
+     * 抛出运行异常：DAO异常
+     */
+    List<Permission> findAllPermission();
+    /**
+     * @param userId
+     * @return userId对应的用户拥有的角色集合
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    Set<Role> findUserRoles(Long userId);
     /**
      * @param roleName 不能为空
      * @return null或者Role
@@ -101,21 +148,12 @@ public interface UserBiz extends BaseBiz<User> {
 
     //    List<Role> findRolesInherit();
     //    List<Role> findChileRoles(Long fatherid);
-
-    /**
-     * @param userId 不能为空
-     * @return 权限集合
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    Set<Permission> findUserPermissions(Long userId);
-
     /**
      * @param roleId 不能为空
      * @return 权限集合
      * 抛出运行异常：参数不合法、DAO异常
      */
     Set<Permission> findRolePermissions(Long roleId);
-
     /**
      * 获得所有父角色的全部权限集合
      * @param roleId 不能为空
@@ -123,43 +161,21 @@ public interface UserBiz extends BaseBiz<User> {
      * 抛出运行异常：角色名称不唯一、参数不合法、DAO异常
      */
     Set<Permission> findFatherRolePermissions(Long roleId);
+    /**
+     * @param userId 不能为空
+     * @return 权限集合
+     * 抛出运行异常：参数不合法、DAO异常
+     */
+    Set<Permission> findUserPermissions(Long userId);
+
+
+
+
 //    Set<Permission> findInheritRolePermissions(Long roleId);
 
-    /**
-     * @return 返回所有权限信息的列表
-     * 抛出运行异常：DAO异常
-     */
-    List<Permission> findAllPermission();
 
-    /**
-     * @param roleId 不能为空
-     * @param permissionId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    boolean addPermissionToRole(Long roleId, Long permissionId);
 
-    /**
-     * @param roleId 不能为空
-     * @param permissionId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    boolean removePermissionFromRole(Long roleId, Long permissionId);
 
-    /**
-     * @param userId 不能为空
-     * @param roleId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    boolean addUserRole(Long userId, Long roleId);
 
-    /**
-     * @param userId 不能为空
-     * @param roleId 不能为空
-     * @return
-     * 抛出运行异常：参数不合法、DAO异常
-     */
-    boolean removeUserRole(Long userId, Long roleId);
+
 }

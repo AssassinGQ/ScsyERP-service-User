@@ -24,6 +24,8 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
 
     @Override
     protected BaseDao<Manufacturer> getDao() {
+//        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "spring-dubbo-consumer.xml" });
+//        workshopServiceFacade = (WorkshopServiceFacade) context.getBean("WorkshopServiceFacadeConsumer");
         return this.manufacturerDao;
     }
 

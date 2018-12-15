@@ -3,6 +3,7 @@ package cn.AssassinG.ScsyERP.User.core.biz.impl;
 import cn.AssassinG.ScsyERP.User.core.biz.UserBiz;
 import cn.AssassinG.ScsyERP.User.core.dao.*;
 import cn.AssassinG.ScsyERP.User.facade.entity.*;
+import cn.AssassinG.ScsyERP.User.facade.enums.UserPermissionType;
 import cn.AssassinG.ScsyERP.User.facade.exceptions.UserBizException;
 import cn.AssassinG.ScsyERP.common.core.biz.impl.BaseBizImpl;
 import cn.AssassinG.ScsyERP.common.core.dao.BaseDao;
@@ -27,6 +28,8 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
     private RolePermissionDao rolePermissionDao;
     @Autowired
     private PermissionDao permissionDao;
+    @Autowired
+    private UserPermissionDao userPermissionDao;
 
     public UserDao getUserDao() {
         return userDao;
@@ -259,27 +262,6 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         }
     }
 
-//    @Override
-//    public List<Role> findRolesInherit() {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<Role> findChileRoles(Long fatherid) {
-//        if(fatherid == null || fatherid.longValue() < 0)
-//            return new ArrayList<Role>();
-//        List<Role> ret = new ArrayList<Role>();
-//        if(fatherid.longValue() == 0) {
-//            ret.add(roleDao.getById(1L));
-//            return ret;
-//        }
-//        Role father_role = roleDao.getById(fatherid);
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("SuperRoleName", father_role.getRoleName());
-//        ret = roleDao.listBy(params);
-//        return ret;
-//    }
-
     /**
      * 查询主键为Id的用户拥有的所有子孙角色拥有的权限集合
      * @param userId 不能为空
@@ -346,6 +328,173 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         return permissions;
     }
 
+    public List<Permission> findAllPermission() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("IfDeleted", false);
+        return permissionDao.listBy(params);
+    }
+
+    public void addUserRole(Long userId, Long roleId) {
+        if(roleId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
+        }
+        if(userId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+        }
+        User user = userDao.getById(userId);
+        if(user == null || user.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的用户信息");
+        Role role = roleDao.getById(roleId);
+        if(role == null || role.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的角色信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("UserId", user.getId());
+        params.put("RoleId", role.getId());
+        User_Role user_role = userRoleDao.getBy(params);
+        if(user_role == null){
+            User_Role user_role_new = new User_Role();
+            user_role_new.setUserId(user.getId());
+            user_role_new.setRoleId(role.getId());
+            userRoleDao.insert(user_role_new);
+        }else{
+            if(user_role.getIfDeleted()){
+                user_role.setIfDeleted(false);
+                userRoleDao.update(user_role);
+            }
+        }
+    }
+
+    public void removeUserRole(Long userId, Long roleId) {
+        if(roleId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
+        }
+        if(userId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+        }
+        User user = userDao.getById(userId);
+        if(user == null || user.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的用户信息");
+        Role role = roleDao.getById(roleId);
+        if(role == null || role.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的角色信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("UserId", user.getId());
+        params.put("RoleId", role.getId());
+        User_Role user_role = userRoleDao.getBy(params);
+        if(user_role != null && !user_role.getIfDeleted()){
+            userRoleDao.delete(user_role);
+        }
+    }
+
+    public void addRolePermission(Long roleId, Long permissionId) {
+        if(roleId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
+        }
+        if(permissionId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        Role role = roleDao.getById(roleId);
+        if(role == null || role.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的角色信息");
+        Permission permission = permissionDao.getById(permissionId);
+        if(permission == null || permission.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的权限信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("RoleId", role.getId());
+        params.put("PermissionId", permission.getId());
+        Role_Permission role_permission = rolePermissionDao.getBy(params);
+        if(role_permission == null){
+            Role_Permission role_permission_new = new Role_Permission();
+            role_permission_new.setRoleId(role.getId());
+            role_permission_new.setPermissionId(permission.getId());
+            rolePermissionDao.insert(role_permission_new);
+        }else{
+            if(role_permission.getIfDeleted()){
+                role_permission.setIfDeleted(false);
+                rolePermissionDao.update(role_permission);
+            }
+        }
+    }
+
+    public void removeRolePermission(Long roleId, Long permissionId) {
+        if(roleId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
+        }
+        if(permissionId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        Role role = roleDao.getById(roleId);
+        if(role == null || role.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的角色信息");
+        Permission permission = permissionDao.getById(permissionId);
+        if(permission == null || permission.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的权限信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("RoleId", role.getId());
+        params.put("PermissionId", permission.getId());
+        Role_Permission role_permission = rolePermissionDao.getBy(params);
+        if(role_permission != null && !role_permission.getIfDeleted()){
+            rolePermissionDao.delete(role_permission);
+        }
+    }
+
+    @Override
+    public void addUserPermission(Long userId, Long permissionId) {
+        if(userId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+        }
+        if(permissionId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        User user = userDao.getById(userId);
+        if(user == null || user.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的用户信息");
+        Permission permission = permissionDao.getById(permissionId);
+        if(permission == null || permission.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的权限信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("UserId", user.getId());
+        params.put("PermissionId", permission.getId());
+        params.put("UserPermissionType", UserPermissionType.Include);
+        User_Permission user_permission = userPermissionDao.getBy(params);
+        if(user_permission == null){
+            User_Permission user_permission_new = new User_Permission();
+            user_permission_new.setUserId(user.getId());
+            user_permission_new.setPermissionId(permission.getId());
+            user_permission_new.setType(UserPermissionType.Include);
+            userPermissionDao.insert(user_permission_new);
+        }else{
+            if(user_permission.getIfDeleted()){
+                user_permission.setIfDeleted(false);
+                userPermissionDao.update(user_permission);
+            }
+        }
+    }
+
+    @Override
+    public void removeUserPermission(Long userId, Long permissionId) {
+        if(userId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+        }
+        if(permissionId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        User user = userDao.getById(userId);
+        if(user == null || user.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的用户信息");
+        Permission permission = permissionDao.getById(permissionId);
+        if(permission == null || permission.getIfDeleted())
+            throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "没有对应的权限信息");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("UserId", user.getId());
+        params.put("PermissionId", permission.getId());
+        params.put("UserPermissionType", UserPermissionType.Declude);
+        User_Permission user_permission = userPermissionDao.getBy(params);
+        if(user_permission != null && !user_permission.getIfDeleted()){
+            userPermissionDao.delete(user_permission);
+        }
+    }
+
 //    @Override
 //    public Set<Permission> findInheritRolePermissions(Long roleid) {
 //        Role role = roleDao.getById(roleid);
@@ -372,126 +521,24 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
 //        return permissions;
 //    }
 
-    public List<Permission> findAllPermission() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("IfDeleted", false);
-        return permissionDao.listBy(params);
-    }
-
-    public boolean addPermissionToRole(Long roleId, Long permissionId) {
-        if(roleId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
-        }
-        if(permissionId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
-        }
-        Role role = roleDao.getById(roleId);
-        if(role == null || role.getIfDeleted())
-            return false;
-        Permission permission = permissionDao.getById(permissionId);
-        if(permission == null || permission.getIfDeleted())
-            return false;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("RoleId", role.getId());
-        params.put("PermissionId", permission.getId());
-        Role_Permission role_permission = rolePermissionDao.getBy(params);
-        if(role_permission == null){
-            Role_Permission role_permission_new = new Role_Permission();
-            role_permission_new.setRoleId(role.getId());
-            role_permission_new.setPermissionId(permission.getId());
-            rolePermissionDao.insert(role_permission_new);
-            return true;
-        }else{
-            if(role_permission.getIfDeleted()){
-                role_permission.setIfDeleted(false);
-                rolePermissionDao.update(role_permission);
-                return true;
-            }else{
-                return false;
-            }
-        }
-    }
-
-    public boolean removePermissionFromRole(Long roleId, Long permissionId) {
-        if(roleId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
-        }
-        if(permissionId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
-        }
-        Role role = roleDao.getById(roleId);
-        if(role == null || role.getIfDeleted())
-            return false;
-        Permission permission = permissionDao.getById(permissionId);
-        if(permission == null || permission.getIfDeleted())
-            return false;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("RoleId", role.getId());
-        params.put("PermissionId", permission.getId());
-        Role_Permission role_permission = rolePermissionDao.getBy(params);
-        if(role_permission == null || role_permission.getIfDeleted()){
-            return false;
-        }else{
-            rolePermissionDao.delete(role_permission);
-            return true;
-        }
-    }
-
-    public boolean addUserRole(Long userId, Long roleId) {
-        if(roleId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
-        }
-        if(userId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
-        }
-        User user = userDao.getById(userId);
-        if(user == null || user.getIfDeleted())
-            return false;
-        Role role = roleDao.getById(roleId);
-        if(role == null || role.getIfDeleted())
-            return false;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("UserId", user.getId());
-        params.put("RoleId", role.getId());
-        User_Role user_role = userRoleDao.getBy(params);
-        if(user_role == null){
-            User_Role user_role_new = new User_Role();
-            user_role_new.setUserId(user.getId());
-            user_role_new.setRoleId(role.getId());
-            userRoleDao.insert(user_role_new);
-            return true;
-        }else{
-            if(user_role.getIfDeleted()){
-                user_role.setIfDeleted(false);
-                userRoleDao.update(user_role);
-                return true;
-            }else
-                return false;
-        }
-    }
-
-    public boolean removeUserRole(Long userId, Long roleId) {
-        if(roleId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "角色主键不能为空");
-        }
-        if(userId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
-        }
-        User user = userDao.getById(userId);
-        if(user == null || user.getIfDeleted())
-            return false;
-        Role role = roleDao.getById(roleId);
-        if(role == null || role.getIfDeleted())
-            return false;
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("UserId", user.getId());
-        params.put("RoleId", role.getId());
-        User_Role user_role = userRoleDao.getBy(params);
-        if(user_role == null || user_role.getIfDeleted()){
-            return false;
-        }else{
-            userRoleDao.delete(user_role);
-            return true;
-        }
-    }
+//    @Override
+//    public List<Role> findRolesInherit() {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<Role> findChileRoles(Long fatherid) {
+//        if(fatherid == null || fatherid.longValue() < 0)
+//            return new ArrayList<Role>();
+//        List<Role> ret = new ArrayList<Role>();
+//        if(fatherid.longValue() == 0) {
+//            ret.add(roleDao.getById(1L));
+//            return ret;
+//        }
+//        Role father_role = roleDao.getById(fatherid);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("SuperRoleName", father_role.getRoleName());
+//        ret = roleDao.listBy(params);
+//        return ret;
+//    }
 }

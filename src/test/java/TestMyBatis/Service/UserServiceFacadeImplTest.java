@@ -283,12 +283,12 @@ public class UserServiceFacadeImplTest {
 
     @Test
     public void addPermissionToRole() {
-        userService.addPermissionToRole(1L, 1L);
+        userService.addRolePermission(1L, 1L);
     }
 
     @Test
     public void removePermissionFromRole() {
-        userService.removePermissionFromRole(1L, 1L);
+        userService.removeRolePermission(1L, 1L);
     }
 
     @Test

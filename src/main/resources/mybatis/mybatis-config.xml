@@ -44,6 +44,7 @@
 		<typeAlias alias="RoleBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Role" />
 		<typeAlias alias="RolePermissionBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Role_Permission" />
 		<typeAlias alias="PermissionBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Permission" />
+		<typeAlias alias="UserPermissionBean" type="cn.AssassinG.ScsyERP.User.facade.entity.User_Permission" />
 		<typeAlias alias="CorporationBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Corporation" />
 		<typeAlias alias="GovernmentBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Government" />
 		<typeAlias alias="AdminBean" type="cn.AssassinG.ScsyERP.User.facade.entity.Admin" />
@@ -60,6 +61,7 @@
 		<mapper resource="mybatis/mapper/UserRole.Mapper.xml" />
 		<mapper resource="mybatis/mapper/Role.Mapper.xml" />
 		<mapper resource="mybatis/mapper/RolePermission.Mapper.xml" />
+		<mapper resource="mybatis/mapper/UserPermission.Mapper.xml" />
 		<mapper resource="mybatis/mapper/Permission.Mapper.xml" />
 		<mapper resource="mybatis/mapper/Corporation.Mapper.xml" />
 		<mapper resource="mybatis/mapper/Government.Mapper.xml" />
