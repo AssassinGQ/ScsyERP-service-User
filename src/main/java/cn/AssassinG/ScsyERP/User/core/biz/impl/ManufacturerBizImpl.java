@@ -7,7 +7,7 @@ import cn.AssassinG.ScsyERP.User.core.dao.ManufacturerDao;
 import cn.AssassinG.ScsyERP.User.facade.entity.Manufacturer;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.User.facade.enums.UserType;
-import cn.AssassinG.ScsyERP.User.facade.exceptions.ManufacturerBizException;
+import cn.AssassinG.ScsyERP.User.facade.service.ManufacturerBizException;
 import cn.AssassinG.ScsyERP.common.core.dao.BaseDao;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;

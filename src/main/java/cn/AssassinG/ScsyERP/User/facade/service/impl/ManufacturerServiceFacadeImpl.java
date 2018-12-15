@@ -4,6 +4,8 @@ import cn.AssassinG.ScsyERP.User.core.biz.ManufacturerBiz;
 import cn.AssassinG.ScsyERP.User.core.biz.LoginableBiz;
 import cn.AssassinG.ScsyERP.User.facade.entity.Manufacturer;
 import cn.AssassinG.ScsyERP.User.facade.service.ManufacturerServiceFacade;
+import cn.AssassinG.ScsyERP.common.exceptions.BizException;
+import cn.AssassinG.ScsyERP.common.exceptions.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,11 @@ public class ManufacturerServiceFacadeImpl extends LoginableServiceImpl<Manufact
 
     @Override
     public void addWorkshops(Long entityId, String jsonArrayStr) {
-        this.manufacturerBiz.addWorkshops(entityId, jsonArrayStr);
+        try {
+            this.manufacturerBiz.addWorkshops(entityId, jsonArrayStr);
+        }catch(BizException | DaoException e){
+            throw e;
+        }
     }
 
     @Override
