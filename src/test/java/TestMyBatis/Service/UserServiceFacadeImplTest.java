@@ -251,53 +251,53 @@ public class UserServiceFacadeImplTest {
         userService.findUserRoles(1L);
     }
 
-    @Test
-    public void findAllRoles() {
-        userService.findAllRoles();
-    }
-
-    @Test
-    public void findRoleByRoleName() {
-        userService.findRoleByRoleName("asd");
-    }
-
-    @Test
-    public void findUserPermissions() {
-        userService.findUserPermissions(1L);
-    }
-
-    @Test
-    public void findRolePermissions() {
-        userService.findRolePermissions(1L);
-    }
-
-    @Test
-    public void findFatherRolePermissions() {
-        userService.findFatherRolePermissions(1L);
-    }
-
-    @Test
-    public void findAllPermission() {
-        userService.findAllPermission();
-    }
-
-    @Test
-    public void addPermissionToRole() {
-        userService.addRolePermission(1L, 1L);
-    }
-
-    @Test
-    public void removePermissionFromRole() {
-        userService.removeRolePermission(1L, 1L);
-    }
-
-    @Test
-    public void addUserRole() {
-        userService.addUserRole(1L, 1L);
-    }
-
-    @Test
-    public void removeUserRole() {
-        userService.removeUserRole(1L, 1L);
-    }
+//    @Test
+//    public void findAllRoles() {
+//        userService.findAllRoles();
+//    }
+//
+//    @Test
+//    public void findRoleByRoleName() {
+//        userService.findRoleByRoleName("asd");
+//    }
+//
+//    @Test
+//    public void findUserPermissions() {
+//        userService.findUserPermissions(1L);
+//    }
+//
+//    @Test
+//    public void findRolePermissions() {
+//        userService.findRolePermissions(1L);
+//    }
+//
+//    @Test
+//    public void findFatherRolePermissions() {
+//        userService.findFatherRolePermissions(1L);
+//    }
+//
+//    @Test
+//    public void findAllPermission() {
+//        userService.findAllPermission();
+//    }
+//
+//    @Test
+//    public void addPermissionToRole() {
+//        userService.addRolePermission(1L, 1L);
+//    }
+//
+//    @Test
+//    public void removePermissionFromRole() {
+//        userService.removeRolePermission(1L, 1L);
+//    }
+//
+//    @Test
+//    public void addUserRole() {
+//        userService.addUserRole(1L, 1L);
+//    }
+//
+//    @Test
+//    public void removeUserRole() {
+//        userService.removeUserRole(1L, 1L);
+//    }
 }
