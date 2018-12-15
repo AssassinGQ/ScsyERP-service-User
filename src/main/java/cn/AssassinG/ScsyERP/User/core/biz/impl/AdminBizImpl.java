@@ -5,7 +5,7 @@ import cn.AssassinG.ScsyERP.User.core.dao.AdminDao;
 import cn.AssassinG.ScsyERP.User.facade.entity.Admin;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.User.facade.enums.UserType;
-import cn.AssassinG.ScsyERP.User.facade.exceptions.AdminBizException;
+import cn.AssassinG.ScsyERP.User.facade.service.AdminBizException;
 import cn.AssassinG.ScsyERP.common.core.dao.BaseDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
