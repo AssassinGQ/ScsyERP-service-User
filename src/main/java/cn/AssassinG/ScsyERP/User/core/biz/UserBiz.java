@@ -3,6 +3,7 @@ package cn.AssassinG.ScsyERP.User.core.biz;
 import cn.AssassinG.ScsyERP.User.facade.entity.Permission;
 import cn.AssassinG.ScsyERP.User.facade.entity.Role;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
+import cn.AssassinG.ScsyERP.User.facade.entity.User_Permission;
 import cn.AssassinG.ScsyERP.common.core.biz.BaseBiz;
 
 import java.util.List;
@@ -120,7 +121,9 @@ public interface UserBiz extends BaseBiz<User> {
      * @return 权限集合
      * 抛出运行异常：参数不合法、DAO异常
      */
-    Set<Permission> findUserPermissions(Long userId);
+    Set<Permission> findUserFinalPermissions(Long userId);
+
+    List<User_Permission> findUserPermissions(Long userId);
 
 //    Set<Permission> findInheritRolePermissions(Long roleId);
 }

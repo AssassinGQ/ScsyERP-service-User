@@ -4,6 +4,7 @@ import cn.AssassinG.ScsyERP.User.core.biz.UserBiz;
 import cn.AssassinG.ScsyERP.User.facade.entity.Permission;
 import cn.AssassinG.ScsyERP.User.facade.entity.Role;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
+import cn.AssassinG.ScsyERP.User.facade.entity.User_Permission;
 import cn.AssassinG.ScsyERP.User.facade.service.UserServiceFacade;
 import cn.AssassinG.ScsyERP.common.core.biz.BaseBiz;
 import cn.AssassinG.ScsyERP.common.core.service.impl.BaseServiceImpl;
@@ -82,8 +83,12 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
         return userBiz.findUserRoles(userid);
     }
 
-    public Set<Permission> findUserPermissions(Long userid) {
+    public List<User_Permission> findUserPermissions(Long userid) {
         return userBiz.findUserPermissions(userid);
+    }
+
+    public Set<Permission> findUserFinalPermissions(Long userId){
+        return userBiz.findUserFinalPermissions(userId);
     }
 
     public void addUserRole(Long userid, Long roleid) {

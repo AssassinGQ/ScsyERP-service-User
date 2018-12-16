@@ -241,11 +241,30 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
     }
 
     /**
+     * 查询主键为Id的用户拥有的额外和屏蔽角色
+     * @param userId 不能为空
+     * @return
+     */
+    public List<User_Permission> findUserPermissions(Long userId) {
+        if(userId == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+        }
+        User user = userDao.getById(userId);
+        if(user == null || user.getIfDeleted())
+            return new ArrayList<>();
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("IfDeleted", false);
+        queryMap.put("UserId", userId);
+        List<User_Permission> user_permissions = userPermissionDao.listBy(queryMap);
+        return user_permissions;
+    }
+
+    /**
      * 查询主键为Id的用户拥有的所有子孙角色拥有的权限集合
      * @param userId 不能为空
      * @return
      */
-    public Set<Permission> findUserPermissions(Long userId) {
+    public Set<Permission> findUserFinalPermissions(Long userId) {
         if(userId == null){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
         }
