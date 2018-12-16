@@ -102,14 +102,14 @@ public interface UserBiz extends BaseBiz<User> {
      * @return
      * 抛出运行异常：参数不合法、DAO异常
      */
-    void addUserPermission(Long userId, Long permissionId);
+    void addUserPermission(Long userId, Long permissionId, Integer type);
     /**
      * @param userId 不能为空
      * @param permissionId 不能为空
      * @return
      * 抛出运行异常：参数不合法、DAO异常
      */
-    void removeUserPermission(Long userId, Long permissionId);
+    void removeUserPermission(Long userId, Long permissionId, Integer type);
     /**
      * @param userId
      * @return userId对应的用户拥有的角色集合

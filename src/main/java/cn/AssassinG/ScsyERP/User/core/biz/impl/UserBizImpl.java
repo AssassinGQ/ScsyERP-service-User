@@ -344,12 +344,15 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
     }
 
     @Override
-    public void addUserPermission(Long userId, Long permissionId) {
+    public void addUserPermission(Long userId, Long permissionId, Integer type) {
         if(userId == null){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
         }
         if(permissionId == null){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        if(type == null || UserPermissionType.getEnum(type) == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限类型不正确");
         }
         User user = userDao.getById(userId);
         if(user == null || user.getIfDeleted())
@@ -367,7 +370,7 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
             user_permission_new.setUserId(user.getId());
             user_permission_new.setCorporation(user.getCorporation());
             user_permission_new.setPermissionId(permission.getId());
-            user_permission_new.setType(UserPermissionType.Include);
+            user_permission_new.setType(UserPermissionType.getEnum(type));
             userPermissionDao.insert(user_permission_new);
         }else{
             if(user_permission.getIfDeleted()){
@@ -378,12 +381,15 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
     }
 
     @Override
-    public void removeUserPermission(Long userId, Long permissionId) {
+    public void removeUserPermission(Long userId, Long permissionId, Integer type) {
         if(userId == null){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
         }
         if(permissionId == null){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限主键不能为空");
+        }
+        if(type == null || UserPermissionType.getEnum(type) == null){
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "权限类型不正确");
         }
         User user = userDao.getById(userId);
         if(user == null || user.getIfDeleted())
@@ -394,7 +400,7 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("UserId", user.getId());
         params.put("PermissionId", permission.getId());
-        params.put("UserPermissionType", UserPermissionType.Declude);
+        params.put("UserPermissionType", UserPermissionType.getEnum(type));
         User_Permission user_permission = userPermissionDao.getBy(params);
         if(user_permission != null && !user_permission.getIfDeleted()){
             userPermissionDao.delete(user_permission);

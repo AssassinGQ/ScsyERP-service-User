@@ -99,11 +99,11 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
         userBiz.removeUserRole(userid, roleid);
     }
 
-    public void addUserPermission(Long userId, Long permissionId) {
-        userBiz.addUserPermission(userId, permissionId);
+    public void addUserPermission(Long userId, Long permissionId, Integer type) {
+        userBiz.addUserPermission(userId, permissionId, type);
     }
 
-    public void removeUserPermission(Long userId, Long permissionId) {
-        userBiz.removeUserPermission(userId, permissionId);
+    public void removeUserPermission(Long userId, Long permissionId, Integer type) {
+        userBiz.removeUserPermission(userId, permissionId,type);
     }
 }
