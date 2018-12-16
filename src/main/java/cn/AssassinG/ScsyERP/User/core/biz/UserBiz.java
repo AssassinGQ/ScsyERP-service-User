@@ -5,6 +5,7 @@ import cn.AssassinG.ScsyERP.User.facade.entity.Role;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
 import cn.AssassinG.ScsyERP.common.core.biz.BaseBiz;
 
+import java.util.List;
 import java.util.Set;
 
 public interface UserBiz extends BaseBiz<User> {
@@ -16,6 +17,8 @@ public interface UserBiz extends BaseBiz<User> {
     1     * 抛出运行异常：参数不合法、DAO异常
      */
     User findUserByUname(String userName);
+
+    List<User> findAllUser();
 
     /**
      * @param phone 必须是一个合法的手机号

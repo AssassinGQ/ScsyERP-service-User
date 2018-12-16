@@ -10,6 +10,7 @@ import cn.AssassinG.ScsyERP.common.core.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,11 @@ public class UserServiceFacadeImpl extends BaseServiceImpl<User> implements User
 
     public User findUserByPhone(String phone) {
         return userBiz.findUserByPhone(phone);
+    }
+
+    @Override
+    public List<User> findAllUser() {
+        return userBiz.findAllUser();
     }
 
     @Override

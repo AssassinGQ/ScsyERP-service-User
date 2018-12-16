@@ -87,6 +87,13 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
             return user;
     }
 
+    @Override
+    public List<User> findAllUser() {
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("IfDeleted", false);
+        return userDao.listBy(queryMap);
+    }
+
     public User findUserByPhone(String phone){
         if(!StringUtils.isMobileNum(phone)){
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "请输入合法的手机号码:%s", phone);
