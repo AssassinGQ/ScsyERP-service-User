@@ -276,6 +276,17 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         for(Role role : roles){
             permissions.addAll(permissionDao.findByRoleId(role.getId()));
         }
+        List<User_Permission> user_permissions = this.findUserPermissions(userId);
+        for(User_Permission user_permission : user_permissions){
+            Permission permission = permissionDao.getById(user_permission.getPermissionId());
+            if(permission != null && !permission.getIfDeleted()){
+                if(user_permission.getType().getValue() == UserPermissionType.Include.getValue()){
+                    permissions.add(permission);
+                }else{
+                    permissions.remove(permission);
+                }
+            }
+        }
         return permissions;
     }
 
