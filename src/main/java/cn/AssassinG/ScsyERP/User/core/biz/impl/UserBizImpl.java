@@ -311,6 +311,7 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
             User_Role user_role_new = new User_Role();
             user_role_new.setUserId(user.getId());
             user_role_new.setRoleId(role.getId());
+            user_role_new.setCorporation(user.getCorporation());
             userRoleDao.insert(user_role_new);
         }else{
             if(user_role.getIfDeleted()){
@@ -364,6 +365,7 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         if(user_permission == null){
             User_Permission user_permission_new = new User_Permission();
             user_permission_new.setUserId(user.getId());
+            user_permission_new.setCorporation(user.getCorporation());
             user_permission_new.setPermissionId(permission.getId());
             user_permission_new.setType(UserPermissionType.Include);
             userPermissionDao.insert(user_permission_new);

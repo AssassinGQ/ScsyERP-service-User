@@ -153,6 +153,7 @@ public class RoleBizImpl extends BaseBizImpl<Role> implements RoleBiz {
         if(role_permission == null){
             Role_Permission role_permission_new = new Role_Permission();
             role_permission_new.setRoleId(role.getId());
+            role_permission_new.setCorporation(role.getCorporation());
             role_permission_new.setPermissionId(permission.getId());
             rolePermissionDao.insert(role_permission_new);
         }else{
