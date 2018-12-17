@@ -18,5 +18,5 @@ create table t_user_permission (
 alter table t_user_permission comment '用户权限关联表';
 
 ## 用户角色关联信息初始化
-insert into t_user_permission(corporation, user_id, permission_id, user_permission_type) values (1, 1, 1, "屏蔽");
-insert into t_user_permission(corporation, user_id, permission_id, user_permission_type) values (1, 2, 2, "额外");
+insert into t_user_permission(corporation, user_id, permission_id, user_permission_type) values (1, 1, 1, "额外");
+insert into t_user_permission(corporation, user_id, permission_id, user_permission_type) values (1, 2, 2, "屏蔽");
