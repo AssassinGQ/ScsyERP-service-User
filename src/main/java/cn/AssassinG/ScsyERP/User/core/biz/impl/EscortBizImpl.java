@@ -47,6 +47,11 @@ public class EscortBizImpl extends LoginableBizImpl<Escort> implements EscortBiz
     }
 
     @Override
+    public void delete(Escort escort) {
+        throw new EscortBizException(EscortBizException.ESCORTBIZ_CANNOTOPERATE, "押运员信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -60,7 +65,7 @@ public class EscortBizImpl extends LoginableBizImpl<Escort> implements EscortBiz
         if(escort == null || escort.getIfDeleted()){
             throw new EscortBizException(EscortBizException.ESCORTBIZ_NOSUIT_RESULT, "没有对应的押运员基本信息，userId: %d", userId);
         }
-        this.delete(escort);
+        super.delete(escort);
         userBiz.delete(user);
     }
 

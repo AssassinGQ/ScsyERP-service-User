@@ -69,6 +69,11 @@ public class DriverBizImpl extends LoginableBizImpl<Driver> implements DriverBiz
     }
 
     @Override
+    public void delete(Driver driver) {
+        throw new DriverBizException(DriverBizException.DRIVERBIZ_CANNOTOPERATE, "驾驶员信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -82,7 +87,7 @@ public class DriverBizImpl extends LoginableBizImpl<Driver> implements DriverBiz
         if(driver == null || driver.getIfDeleted()){
             throw new DriverBizException(DriverBizException.DRIVERBIZ_NOSUIT_RESULT, "没有对应的驾驶员基本信息，userId: %d", userId);
         }
-        this.delete(driver);
+        super.delete(driver);
         userBiz.delete(user);
     }
 

@@ -61,6 +61,11 @@ public class ConsigneeBizImpl extends LoginableBizImpl<Consignee> implements Con
     }
 
     @Override
+    public void delete(Consignee consignee) {
+        throw new ConsigneeBizException(ConsigneeBizException.CONSIGNEEBIZ_CANNOTOPERATE, "收货方信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -74,7 +79,7 @@ public class ConsigneeBizImpl extends LoginableBizImpl<Consignee> implements Con
         if(consignee == null || consignee.getIfDeleted()){
             throw new ConsigneeBizException(ConsigneeBizException.CONSIGNEEBIZ_NOSUIT_RESULT, "没有对应的收货单位基本信息，userId: %d", userId);
         }
-        this.delete(consignee);
+        super.delete(consignee);
         userBiz.delete(user);
     }
 

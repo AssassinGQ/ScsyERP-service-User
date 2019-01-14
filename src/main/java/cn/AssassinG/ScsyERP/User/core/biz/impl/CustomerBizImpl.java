@@ -66,6 +66,11 @@ public class CustomerBizImpl extends LoginableBizImpl<Customer> implements Custo
     }
 
     @Override
+    public void delete(Customer customer) {
+        throw new CustomerBizException(CustomerBizException.CUSTOMERBIZ_CANNOTOPERATE, "客户信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -79,7 +84,7 @@ public class CustomerBizImpl extends LoginableBizImpl<Customer> implements Custo
         if(customer == null || customer.getIfDeleted()){
             throw new CustomerBizException(CustomerBizException.CUSTOMERBIZ_NOSUIT_RESULT, "没有对应的客户基本信息，userId: %d", userId);
         }
-        this.delete(customer);
+        super.delete(customer);
         userBiz.delete(user);
     }
 

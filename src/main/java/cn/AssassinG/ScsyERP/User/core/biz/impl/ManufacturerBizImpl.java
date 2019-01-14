@@ -66,6 +66,11 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
     }
 
     @Override
+    public void delete(Manufacturer manufacturer) {
+        throw new ManufacturerBizException(ManufacturerBizException.MANUFACTURERBIZ_CANNOTOPERATE, "生产厂家信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -79,7 +84,7 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
         if(manufacturer == null || manufacturer.getIfDeleted()){
             throw new ManufacturerBizException(ManufacturerBizException.MANUFACTURERBIZ_NOSUIT_RESULT, "没有对应的生产厂家基本信息，userId: %d", userId);
         }
-        this.delete(manufacturer);
+        super.delete(manufacturer);
         userBiz.delete(user);
     }
 

@@ -47,6 +47,11 @@ public class AdminBizImpl extends LoginableBizImpl<Admin> implements AdminBiz {
     }
 
     @Override
+    public void delete(Admin admin) {
+        throw new AdminBizException(AdminBizException.ADMINBIZ_CANNOTOPERATE, "管理员信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -60,7 +65,7 @@ public class AdminBizImpl extends LoginableBizImpl<Admin> implements AdminBiz {
         if(admin == null || admin.getIfDeleted()){
             throw new AdminBizException(AdminBizException.ADMINBIZ_NOSUIT_RESULT, "没有对应的承运方管理员基本信息，userId: %d", userId);
         }
-        this.delete(admin);
+        super.delete(admin);
         userBiz.delete(user);
     }
 }

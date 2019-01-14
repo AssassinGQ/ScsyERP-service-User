@@ -33,7 +33,7 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
      */
     @Override
     public Long createWithUser(Corporation entity, User user) {
-        return -1L;
+        throw new CorporationBizException(CorporationBizException.CORPORATIONBIZ_CANNOTOPERATE, "承运方信息不能使用createWithUser创建");
     }
 
     @Override
@@ -108,6 +108,11 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
     }
 
     @Override
+    public void delete(Corporation corporation) {
+        throw new CorporationBizException(CorporationBizException.CORPORATIONBIZ_CANNOTOPERATE, "承运方信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -121,7 +126,7 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         if(corporation == null || corporation.getIfDeleted()){
             throw new CorporationBizException(CorporationBizException.CORPORATIONBIZ_NOSUIT_RESULT, "没有对应的承运方基本信息，userId: %d", userId);
         }
-        this.delete(corporation);
+        super.delete(corporation);
         userBiz.delete(user);
     }
 

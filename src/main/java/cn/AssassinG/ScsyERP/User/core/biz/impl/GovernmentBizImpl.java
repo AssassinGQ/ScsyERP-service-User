@@ -34,7 +34,7 @@ public class GovernmentBizImpl extends LoginableBizImpl<Government> implements G
      */
     @Override
     public Long createWithUser(Government entity, User user) {
-        return -1L;
+        throw new GovernmentBizException(GovernmentBizException.GOVERNMENTBIZ_CANNOTOPERATE, "政府信息不能使用createWithUser创建");
     }
 
     @Override
@@ -121,6 +121,11 @@ public class GovernmentBizImpl extends LoginableBizImpl<Government> implements G
     }
 
     @Override
+    public void delete(Government corporation) {
+        throw new GovernmentBizException(GovernmentBizException.GOVERNMENTBIZ_CANNOTOPERATE, "政府信息不能使用delete方法删除");
+    }
+
+    @Override
     @Transactional
     public void deleteByUserId(Long userId) {
         if(userId == null){
@@ -134,7 +139,7 @@ public class GovernmentBizImpl extends LoginableBizImpl<Government> implements G
         if(government == null || government.getIfDeleted()){
             throw new GovernmentBizException(GovernmentBizException.GOVERNMENTBIZ_NOSUIT_RESULT, "没有对应的政府基本信息，userId: %d", userId);
         }
-        this.delete(government);
+        super.delete(government);
         userBiz.delete(user);
     }
 }
