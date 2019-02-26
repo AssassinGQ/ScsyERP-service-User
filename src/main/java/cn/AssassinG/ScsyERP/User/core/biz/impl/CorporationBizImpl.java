@@ -1,6 +1,7 @@
 package cn.AssassinG.ScsyERP.User.core.biz.impl;
 
 import cn.AssassinG.ScsyERP.User.core.biz.CorporationBiz;
+import cn.AssassinG.ScsyERP.User.core.biz.UserBiz;
 import cn.AssassinG.ScsyERP.User.core.dao.CorporationDao;
 import cn.AssassinG.ScsyERP.User.facade.entity.Corporation;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
@@ -19,6 +20,8 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
 
     @Autowired
     private CorporationDao corporationDao;
+    @Autowired
+    private UserBiz userBiz;
 
     @Override
     protected BaseDao<Corporation> getDao() {

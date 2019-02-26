@@ -1,6 +1,7 @@
 package cn.AssassinG.ScsyERP.User.core.biz.impl;
 
 import cn.AssassinG.ScsyERP.User.core.biz.GovernmentBiz;
+import cn.AssassinG.ScsyERP.User.core.biz.UserBiz;
 import cn.AssassinG.ScsyERP.User.core.dao.GovernmentDao;
 import cn.AssassinG.ScsyERP.User.facade.entity.Government;
 import cn.AssassinG.ScsyERP.User.facade.entity.User;
@@ -20,6 +21,8 @@ public class GovernmentBizImpl extends LoginableBizImpl<Government> implements G
 
     @Autowired
     private GovernmentDao governmentDao;
+    @Autowired
+    private UserBiz userBiz;
 
     @Override
     protected BaseDao<Government> getDao() {
