@@ -69,7 +69,7 @@ public class GovernmentBizImpl extends LoginableBizImpl<Government> implements G
         Government government = new Government(dept);
         government.setName(governmentName);
         government.setCorporation(-1L);
-        long infoId = this.create(government);
+        long infoId = governmentDao.insert(government);
         if(government.getName().equals("-1")){
             government.setName(Government.class.getSimpleName() + infoId);
             this.update(government);
