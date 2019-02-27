@@ -256,7 +256,10 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         queryMap.put("IfDeleted", false);
         queryMap.put("UserId", userId);
         List<User_Permission> user_permissions = userPermissionDao.listBy(queryMap);
-        return user_permissions;
+        if(user_permissions == null)
+            return new ArrayList<>();
+        else
+            return user_permissions;
     }
 
     /**
