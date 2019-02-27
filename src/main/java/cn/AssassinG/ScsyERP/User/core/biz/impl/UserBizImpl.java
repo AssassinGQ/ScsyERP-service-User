@@ -265,29 +265,34 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
      * @return
      */
     public Set<Permission> findUserFinalPermissions(Long userId) {
-        if(userId == null){
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
-        }
-        User user = userDao.getById(userId);
-        if(user == null || user.getIfDeleted())
-            return new HashSet<Permission>();
-        Set<Role> roles = roleDao.findByUserId(user.getId());
-        Set<Permission> permissions = new HashSet<Permission>();
-        for(Role role : roles){
-            permissions.addAll(permissionDao.findByRoleId(role.getId()));
-        }
-        List<User_Permission> user_permissions = this.findUserPermissions(userId);
-        for(User_Permission user_permission : user_permissions){
-            Permission permission = permissionDao.getById(user_permission.getPermissionId());
-            if(permission != null && !permission.getIfDeleted()){
-                if(user_permission.getType().getValue() == UserPermissionType.Include.getValue()){
-                    permissions.add(permission);
-                }else{
-                    permissions.remove(permission);
+        try{
+            if(userId == null){
+                throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "用户主键不能为空");
+            }
+            User user = userDao.getById(userId);
+            if(user == null || user.getIfDeleted())
+                return new HashSet<Permission>();
+            Set<Role> roles = roleDao.findByUserId(user.getId());
+            Set<Permission> permissions = new HashSet<Permission>();
+            for(Role role : roles){
+                permissions.addAll(permissionDao.findByRoleId(role.getId()));
+            }
+            List<User_Permission> user_permissions = this.findUserPermissions(userId);
+            for(User_Permission user_permission : user_permissions){
+                Permission permission = permissionDao.getById(user_permission.getPermissionId());
+                if(permission != null && !permission.getIfDeleted()){
+                    if(user_permission.getType().getValue() == UserPermissionType.Include.getValue()){
+                        permissions.add(permission);
+                    }else{
+                        permissions.remove(permission);
+                    }
                 }
             }
+            return permissions;
+        }catch (Exception e){
+            e.printStackTrace();
+            return new HashSet<>();
         }
-        return permissions;
     }
 
     public void addUserRole(Long userId, Long roleId) {
