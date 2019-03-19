@@ -11,7 +11,6 @@ import cn.AssassinG.ScsyERP.common.core.dao.BaseDao;
 import cn.AssassinG.ScsyERP.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -41,7 +40,7 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
     }
 
     @Override
-    @Transactional(propagation= Propagation.NOT_SUPPORTED)
+    @Transactional
     public Long create(String token, User user, Map<String, Object> paramMap) {
         if(!token.equals("superadminabcd1234")) {
             throw new CorporationBizException(CorporationBizException.CORPORATIONBIZ_NOPERMISSION, "权限码不正确:%s", token);
