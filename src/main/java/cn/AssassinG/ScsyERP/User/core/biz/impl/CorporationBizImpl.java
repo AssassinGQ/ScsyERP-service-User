@@ -65,8 +65,9 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         long infoId = corporationDao.insert(corporation);
         if(corporation.getName().equals("-1")){
             corporation.setName(Corporation.class.getSimpleName() + infoId);
-            this.update(corporation);
         }
+        corporation.setCorporation(infoId);
+        this.update(corporation);
         //创建登录信息
         User user_insert = new User();
         if(user.getUserName() == null || user.getUserName().isEmpty())
@@ -88,8 +89,9 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         long userId = userBiz.create(user_insert);
         if(user_insert.getUserName().equals("-1")){
             user_insert.setUserName(User.class.getSimpleName() + userId);
-            userBiz.update(user_insert);
         }
+        user_insert.setCorporation(infoId);
+        userBiz.update(user_insert);
         return userId;
     }
 
