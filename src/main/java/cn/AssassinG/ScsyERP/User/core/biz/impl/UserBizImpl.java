@@ -45,6 +45,9 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
 
     @Transactional
     public Long create(User user) {
+        if(user.getPassWord() != null && !user.getPassWord().startsWith("{noop}")){
+            user.setPassWord("{noop}" + user.getPassWord());
+        }
         ValidUtils.ValidationWithExp(user);
         User user_checkuname = userDao.findByUserName(user.getUserName());
         if(user_checkuname != null && !user_checkuname.getIfDeleted()){
@@ -59,6 +62,9 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
 
     @Transactional
     public void update(User user) {
+        if(user.getPassWord() != null && !user.getPassWord().startsWith("{noop}")){
+            user.setPassWord("{noop}" + user.getPassWord());
+        }
         ValidUtils.ValidationWithExp(user);
         User user_checkuname = userDao.findByUserName(user.getUserName());
         if(user_checkuname != null && !user_checkuname.getIfDeleted() && user_checkuname.getId().longValue() != user.getId().longValue()){
@@ -146,7 +152,8 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
             throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "请输入合法的手机号码:%s", phone);
         }
         if(vcode == null || newPassWord == null) {
-            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "验证码和新密码不能为空，验证码:%s,新密码:%s", vcode, newPassWord);
+            throw new UserBizException(UserBizException.USERBIZ_PARAMS_ILLEGAL, "验证码和新密码不能为空，验证码:%s,新密码:%s",
+                    vcode == null ? "null" : vcode, newPassWord == null ? "null" : newPassWord);
         }
         User user = this.findUserByPhone(phone);
         if(user == null || user.getIfDeleted()){
@@ -155,6 +162,8 @@ public class UserBizImpl extends BaseBizImpl<User> implements UserBiz {
         if(!user.getVcode().equals(vcode) || System.currentTimeMillis() - user.getVcodeTime().getTime() > 1000*60*60*4){//验证码有效期四个小时
             throw new UserBizException(UserBizException.USERBIZ_CANNOTOPERATE, "验证码过期，手机号:%s", phone);
         }
+        if(!newPassWord.startsWith("{noop}"))
+            newPassWord = "{noop}" + newPassWord;
         user.setPassWord(newPassWord);
         userDao.update(user);
     }

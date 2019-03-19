@@ -74,9 +74,13 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         else
             user_insert.setUserName(user.getUserName());
         if(user.getPassWord() == null || user.getPassWord().isEmpty())
-            user_insert.setPassWord("123456");
-        else
-            user_insert.setPassWord(user.getPassWord());
+            user_insert.setPassWord("{noop}123456");
+        else{
+            if(!user.getPassWord().startsWith("{noop}"))
+                user_insert.setPassWord("{noop}" + user.getPassWord());
+            else
+                user_insert.setPassWord(user.getPassWord());
+        }
         user_insert.setPhone(user.getPhone());
         user_insert.setUserType(UserType.Corporation);
         user_insert.setUserInfo(infoId);
