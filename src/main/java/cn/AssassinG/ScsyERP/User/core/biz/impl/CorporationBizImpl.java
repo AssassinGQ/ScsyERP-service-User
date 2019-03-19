@@ -61,9 +61,9 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         Corporation corporation = new Corporation();
         if(corporationName == null || corporationName.isEmpty())
             corporationName = "-1";
-        corporation.setName("-1");
         corporation.setName(corporationName);
         long infoId = corporationDao.insert(corporation);
+        corporation.setName("asd");
         if(corporation.getName().equals("-1")){
             corporation.setName(Corporation.class.getSimpleName() + infoId);
         }
@@ -86,13 +86,12 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         user_insert.setPhone(user.getPhone());
         user_insert.setUserType(UserType.Corporation);
         user_insert.setUserInfo(infoId);
-        user_insert.setCorporation(-1L);
+        user_insert.setCorporation(infoId);
         long userId = userBiz.create(user_insert);
         if(user_insert.getUserName().equals("-1")){
             user_insert.setUserName(User.class.getSimpleName() + userId);
+            userBiz.update(user_insert);
         }
-        user_insert.setCorporation(infoId);
-        userBiz.update(user_insert);
         return userId;
     }
 
