@@ -61,13 +61,14 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         Corporation corporation = new Corporation();
         if(corporationName == null || corporationName.isEmpty())
             corporationName = "-1";
+        corporation.setName("-1");
         corporation.setName(corporationName);
         long infoId = corporationDao.insert(corporation);
         if(corporation.getName().equals("-1")){
             corporation.setName(Corporation.class.getSimpleName() + infoId);
         }
         corporation.setCorporation(infoId);
-        this.update(corporation);
+        corporationDao.update(corporation);
         //创建登录信息
         User user_insert = new User();
         if(user.getUserName() == null || user.getUserName().isEmpty())
