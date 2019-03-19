@@ -63,9 +63,11 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
             corporationName = "-1";
         corporation.setName(corporationName);
         long infoId = corporationDao.insert(corporation);
-        corporation.setCorporation(infoId);
         if(corporation.getName().equals("-1")){
+            corporation.setCorporation(infoId);
             corporation.setName(Corporation.class.getSimpleName() + infoId);
+        }else{
+            corporation.setCorporation(infoId);
         }
         corporationDao.update(corporation);
         //创建登录信息
