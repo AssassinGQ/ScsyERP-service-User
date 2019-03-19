@@ -10,14 +10,14 @@
 
 	<insert id="insert" parameterType="CorporationBean" keyProperty="id" useGeneratedKeys="true">
 		insert into <include refid="t_corporation"/> (corporation, create_time, update_time, delete_time, is_deleted, name)
-		values (-1, now(), now(), NULL , FALSE , #{Name})
+		values (#{Corporation}, now(), now(), NULL , FALSE , #{Name})
 	</insert>
 
 	<insert id="batchInsert" parameterType="List" keyProperty="id" useGeneratedKeys="true">
 		insert into <include refid="t_corporation"/> (corporation, create_time, update_time, delete_time, is_deleted, name)
 		values
         <foreach collection="list" item="obj" separator=",">
-            (-1, now(), now(), NULL, FALSE, #{obj.Name})
+            (#{obj.Corporation}, now(), now(), NULL, FALSE, #{obj.Name})
         </foreach>
 	</insert>
 	
@@ -25,7 +25,8 @@
 		update <include refid="t_corporation"/>
 		<set>
 			update_time = now(),
-			name =  #{Name}
+			name =  #{Name},
+		    corporation = #{Corporation}
 		</set>
 		<where>
 			id = #{Id}
@@ -47,6 +48,13 @@
                     </if>
                 </foreach>
             </trim>
+			<trim prefix="corporation =case" suffix="end,">
+				<foreach collection="list" item="item">
+					<if test="item.Corporation!=null">
+						when id=#{item.Id} then #{item.Corporation}
+					</if>
+				</foreach>
+			</trim>
         </trim>
         <where>
             <foreach collection="list" separator="or" item="item">
