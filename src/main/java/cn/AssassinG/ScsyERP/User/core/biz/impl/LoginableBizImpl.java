@@ -7,10 +7,12 @@ import cn.AssassinG.ScsyERP.User.facade.enums.UserType;
 import cn.AssassinG.ScsyERP.User.facade.exceptions.UserBizException;
 import cn.AssassinG.ScsyERP.common.core.biz.impl.BaseBizImpl;
 import cn.AssassinG.ScsyERP.common.entity.LoginableEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class LoginableBizImpl<T extends LoginableEntity> extends BaseBizImpl<T> implements LoginableBiz<T> {
 
+    @Autowired
     protected UserBiz userBiz;
 
     @Override
