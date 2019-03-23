@@ -118,6 +118,7 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
                 manufacturer.getWorkshops().add(workshop.getId());
                 workshop.setManufacturer(manufacturer.getId());
             }
+            workshopServiceFacade.update(workshop);
         }
         this.update(manufacturer);
         if(!flag){
@@ -143,6 +144,8 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
         }
         manufacturer.getWorkshops().remove(workshop.getId());
         workshop.setManufacturer(null);
+        workshopServiceFacade.update(workshop);
         this.update(manufacturer);
+
     }
 }
