@@ -116,6 +116,7 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
                 flag = false;
             }else{
                 manufacturer.getWorkshops().add(workshop.getId());
+                workshop.setManufacturer(manufacturer.getId());
             }
         }
         this.update(manufacturer);
@@ -141,6 +142,7 @@ public class ManufacturerBizImpl extends LoginableBizImpl<Manufacturer> implemen
             throw new ManufacturerBizException(ManufacturerBizException.MANUFACTURERBIZ_NOSUIT_RESULT, "没有符合条件的生产车间基本信息，entityId: %d", entityId);
         }
         manufacturer.getWorkshops().remove(workshop.getId());
+        workshop.setManufacturer(null);
         this.update(manufacturer);
     }
 }
