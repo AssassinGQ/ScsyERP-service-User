@@ -62,6 +62,7 @@ public class CorporationBizImpl extends LoginableBizImpl<Corporation> implements
         if(corporationName == null || corporationName.isEmpty())
             corporationName = "-1";
         corporation.setName(corporationName);
+        corporation.setCorporation(-1L);
         long infoId = corporationDao.insert(corporation);
         if(corporation.getName().equals("-1")){
             corporation.setName(Corporation.class.getSimpleName() + infoId);
