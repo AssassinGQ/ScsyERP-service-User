@@ -16,5 +16,5 @@ create table t_corporation (
 alter table t_corporation comment '承运方信息表';
 
 ## 权限的初始化数据
-insert into t_corporation(corporation, name) values (1, "浙大");
-insert into t_corporation(corporation, name) values (2, "三辰");
+insert into t_corporation(corporation, name) values (1, "zheda");
+insert into t_corporation(corporation, name) values (2, "sanchen");

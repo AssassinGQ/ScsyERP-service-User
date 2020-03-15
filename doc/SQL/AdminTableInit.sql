@@ -17,6 +17,6 @@ create table t_admin (
 alter table t_admin comment '承运方管理员信息表';
 
 ## 权限的初始化数据
-insert into t_admin(corporation, name, dept) values (1, "管理员1", "仓库管理员");
-insert into t_admin(corporation, name, dept) values (1, "管理员2", "项目管理员");
-insert into t_admin(corporation, name, dept) values (1, "管理员3", "财务管理员");
+insert into t_admin(corporation, name, dept) values (1, "admin_1", "warehouse_admin");
+insert into t_admin(corporation, name, dept) values (1, "admin_2", "project_admin");
+insert into t_admin(corporation, name, dept) values (1, "admin_3", "fun_admin");

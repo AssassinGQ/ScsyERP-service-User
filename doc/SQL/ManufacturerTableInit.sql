@@ -19,4 +19,4 @@ create table t_manufacturer (
 alter table t_manufacturer comment '生产商信息表';
 
 ## 权限的初始化数据
-insert into t_manufacturer(corporation, name, address, man_name, workshops) values (1, "生产厂家", "浙江绍兴", "张流", "");
+insert into t_manufacturer(corporation, name, address, man_name, workshops) values (1, "manufacturer", "shaoxing", "zhangliu", "");

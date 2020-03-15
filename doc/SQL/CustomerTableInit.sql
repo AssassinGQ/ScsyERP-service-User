@@ -19,4 +19,4 @@ create table t_customer (
 alter table t_customer comment '客户信息表';
 
 ## 权限的初始化数据
-insert into t_customer(corporation, name) values (1, "张武客户");
+insert into t_customer(corporation, name) values (1, "zhangwu");

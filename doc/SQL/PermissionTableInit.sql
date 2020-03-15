@@ -17,8 +17,8 @@ create table t_permission (
 alter table t_permission comment '权限信息表';
 
 ## 权限的初始化数据
-insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_SUPER_ADMIN", "全部权限");
-insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_URL_HOME", "访问主页");
-insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_URL_AUTHCONFIG", "访问权限配置页面");
-insert into t_permission(corporation, permission_name, permission_desc) values (1, "RES_SER_AUTHREAD", "读取所有权限配置");
-insert into t_permission(corporation, permission_name, permission_desc) values (1, "RES_SER_AUTHCONFIG", "修改所有权限配置");
+insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_SUPER_ADMIN", "all");
+insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_URL_HOME", "home_page");
+insert into t_permission(corporation, permission_name, permission_desc) values (1, "ROLE_URL_AUTHCONFIG", "config_permission");
+insert into t_permission(corporation, permission_name, permission_desc) values (1, "RES_SER_AUTHREAD", "read_permission");
+insert into t_permission(corporation, permission_name, permission_desc) values (1, "RES_SER_AUTHCONFIG", "modify_permission");

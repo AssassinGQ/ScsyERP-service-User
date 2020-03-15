@@ -19,4 +19,4 @@ create table t_driver (
 alter table t_driver comment '驾驶员信息表';
 
 ## 权限的初始化数据
-insert into t_driver(corporation, name, driver_license, capable_car, id_card_photo) values (1, "张三驾驶员", "123456789", "红旗牌", "1");
+insert into t_driver(corporation, name, driver_license, capable_car, id_card_photo) values (1, "zhangsan", "123456789", "hongqi", "1");

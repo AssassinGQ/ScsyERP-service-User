@@ -18,22 +18,22 @@ create table t_role (
 alter table t_role comment '角色信息表';
 
 ## 角色的初始化数据
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "superadmin", "超级管理员", "admin0");##1
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "superadmin", "superadmin", "admin0");##1
 
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corpration", "承运方账号", "superadmin");##2
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "government", "政府账号", "superadmin");##3
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corpration", "corpration", "superadmin");##2
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "government", "government", "superadmin");##3
 
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_admin", "承运方管理员", "corpration");##4
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_partner", "承运方合作方", "corpration");##5
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_employee", "承运方员工", "corpration");##6
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_admin", "corp_admin", "corpration");##4
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_partner", "corp_partner", "corpration");##5
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "corp_employee", "corp_employee", "corpration");##6
 
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_warehouse", "仓库管理员", "corp_admin");##7
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_project", "项目管理员", "corp_admin");##8
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_finance", "财务管理员", "corp_admin");##9
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_consignor", "客户", "corp_partner");##10
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_manufacturer", "生产厂家", "corp_partner");##11
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_receiver", "收货方", "corp_partner");##12
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_driver", "驾驶员", "corp_employee");##13
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_supervisor", "监装员", "corp_employee");##14
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_leftworker", "起重工", "corp_employee");##15
-insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_driveworker", "行车工", "corp_employee");##16
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_warehouse", "admin_warehouse", "corp_admin");##7
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_project", "admin_project", "corp_admin");##8
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "admin_finance", "admin_finance", "corp_admin");##9
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_consignor", "partner_consignor", "corp_partner");##10
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_manufacturer", "partner_manufacturer", "corp_partner");##11
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "partner_receiver", "partner_receiver", "corp_partner");##12
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_driver", "employee_driver", "corp_employee");##13
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_supervisor", "employee_supervisor", "corp_employee");##14
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_leftworker", "employee_leftworker", "corp_employee");##15
+insert into t_role(corporation, role_name, role_desc, superrole_name) values (1, "employee_driveworker", "employee_driveworker", "corp_employee");##16

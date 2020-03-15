@@ -17,8 +17,8 @@ create table t_government (
 alter table t_government comment '政府信息表';
 
 ## 权限的初始化数据
-insert into t_government(corporation, name, dept) values (-1, "运管部", "TransportDept");
-insert into t_government(corporation, name, dept) values (-1, "交警部", "TrafficPoliceDept");
-insert into t_government(corporation, name, dept) values (-1, "环保部", "EnvironmentalDept");
-insert into t_government(corporation, name, dept) values (-1, "消防部", "FireDept");
-insert into t_government(corporation, name, dept) values (-1, "安监部", "SafetySupervisionDept");
+insert into t_government(corporation, name, dept) values (-1, "yunguan", "TransportDept");
+insert into t_government(corporation, name, dept) values (-1, "jiaojing", "TrafficPoliceDept");
+insert into t_government(corporation, name, dept) values (-1, "huanbao", "EnvironmentalDept");
+insert into t_government(corporation, name, dept) values (-1, "xiaofang", "FireDept");
+insert into t_government(corporation, name, dept) values (-1, "anjian", "SafetySupervisionDept");

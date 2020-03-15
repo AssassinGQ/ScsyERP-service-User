@@ -18,4 +18,4 @@ create table t_consignee (
 alter table t_consignee comment '收货方信息表';
 
 ## 权限的初始化数据
-insert into t_consignee(corporation, name, address, man_name) values (1, "张琦收货方", "湖北武汉", "张八收货员");
+insert into t_consignee(corporation, name, address, man_name) values (1, "zhangqi", "wuhan", "zhangba");

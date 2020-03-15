@@ -16,4 +16,4 @@ create table t_escort (
 alter table t_escort comment '押运员信息表';
 
 ## 权限的初始化数据
-insert into t_escort(corporation, name) values (1, "张思押运员");
+insert into t_escort(corporation, name) values (1, "zhangsi");
